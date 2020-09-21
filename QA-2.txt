@@ -1,0 +1,70 @@
+1. Вывести закрепления сотрудника за заказами в виде: OrderID, LastName, FirstName (196 записей)
+
+SELECT LastName,FirstName	
+FROM  Employees	e 
+JOIN Orders o
+ON e.EmployeeID=o.EmployeeID 
+
+2. SELECT distinct shipperid FROM Orders o join shippers s on o.ShipperID = s.ShipperID. В чём ошибка в данном запросе и как её исправить?
+
+SELECT  DISTINCT  o.ShipperID
+FROM Orders  o 
+JOIN shippers  s 
+ON o.ShipperID = s.ShipperID
+
+3. Вывести всю информацию о сотрудниках, у которых нет ни одного заказа (join и его виды)
+
+SELECT e.*
+FROM Employees e
+LEFT JOIN Orders o 
+ON e.EmployeeID=o.EmployeeID
+WHERE OrderID IS NULL
+
+
+4. Вывести отчёт в виде: номер заказа, количество товара в заказе, название товара (OrderID, Quantity, ProductName 518 записей)
+
+SELECT OrderID, Quantity, ProductName
+FROM OrderDetails
+JOIN Products
+ON OrderDetails.ProductID=Products.ProductID
+
+
+5. У нас есть две таблицы: Shippers и Suppliers, необходимо сделать общий справочник состоящий из двух колонок (имя таблицы с которой взята запись, название ShipperName или SupplierName
+
+SELECT "Shipper",ShipperName
+FROM Shippers
+UNION 
+SELECT "Supplier",SupplierName
+FROM Suppliers
+ 
+6.Выбрать все коды клиентов - CustomerID, сделавших заказ в 1996 году, но не сделавших в 1997 году. (результат 40 записей) 
+
+SELECT CustomerID
+FROM [Orders]
+WHERE OrderDate like "1996%"
+EXCEPT
+SELECT CustomerID
+FROM [Orders]
+WHERE OrderDate like "1997%"
+
+7.Выбрать все номера заказов и продукты в них, где quantity > 20 и CategoryName='Produce' (ответ 12 записей)
+
+SELECT OrderDetails.OrderID, Products.ProductName
+FROM OrderDetails
+JOIN Products
+ON OrderDetails.ProductID=Products.ProductID
+JOIN Categories
+ON Products.CategoryID=Categories.CategoryID
+WHERE Quantity>20 AND CategoryName='Produce'
+
+
+
+
+
+
+
+
+
+
+
+
