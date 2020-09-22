@@ -1,0 +1,44 @@
+1. Добавить себя в таблицу сотрудников под c 11м EmployeeID
+
+INSERT INTO Employees (EmployeeID,LastName,FirstName,BirthDate)
+VALUES ( "11","Artem","Stefiienko","1932.3.21" )
+
+2. Изменить колонку FirstName на значение "Yeah, its me" для сотрудника с номером 11 
+
+UPDATE  Employees
+SET FirstName="Yeah, its me"
+WHERE EmployeeID = 11
+
+3. Для заказов с CustomerID = 90 изменить значение в колонке EmployeeID на 11.
+
+UPDATE  Orders
+SET  EmployeeID="11"
+WHERE CustomerID = 90
+
+4. Для заказов с CustomerID = 89 изменить значение в колонке EmployeeID на 11. (итого у сотрудника 11 должно быть три заказа)
+
+UPDATE  Orders 
+SET EmployeeID="11"
+WHERE CustomerID ="89"
+
+5*. Посчитать сумму (количество * цену) каждого из заказов сотрудника 11. 
+
+Select OrderID, sum (price*quantity)
+From Products
+Join Orderdetails
+On Products.ProductID = Orderdetails.ProductID
+Where OrderID in (Select Orders.OrderID From Orders Where EmployeeID=11)
+Group by OrderID;
+
+6*. Для товаров, у которых цена больше средней цены по всем продуктам, повысить цену еще на 10%. Проверить, что запрос 5 изменился по суммам. (25 товаров имеют цену больше средней)
+
+UPDATE Products
+SET Price=Price*1.1
+WHERE Price>(SELECT AVG(Price) FROM Products)
+
+ 
+7.Напишите перечень Ваших действий, если необходимо удалить запись "Federal Shipping" (удалить всю строку)
+
+DELETE  
+FROM [Shippers]
+WHERE ShipperName = "Federal Shipping"
