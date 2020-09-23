@@ -1,0 +1,71 @@
+1. Найти максимальный номер заказа сотрудника Buchanan Steven
+
+SELECT max(o.OrderID)
+FROM Employees e
+JOIN Orders o 
+ON e.EmployeeID = o.EmployeeID
+WHERE e.LastName = "Buchanan" AND e.FirstName = "Steven"
+
+2. Вывести номера заказов и общую сумму по колонке Quantity. Оставить только те записи, в которых сумма больше 200 (ответ: 3 записи)
+
+SELECT OrderID, SUM(Quantity)
+FROM OrderDetails
+GROUP BY OrderID
+HAVING SUM(Quantity) > 200
+
+
+3. Вывести товары, цены которых больше средней цены по всем продуктам (ответ: 25 записей)
+
+SELECT * FROM Products
+WHERE price > (SELECT AVG(price) FROM Products)
+
+
+4. Вывести CategoryID и максимальную цену товара в каждой категории. 
+
+SELECT CategoryID, MAX(Price)
+FROM Products
+GROUP BY CategoryID
+
+
+5. Вывести EmployeeID и количество их заказов. Учесть, что у сотрудника может не быть заказов.
+
+SELECT Employees.EmployeeID, Count (OrderID)
+FROM [Employees]
+left join Orders
+on Employees.EmployeeID=Orders.EmployeeID
+Group by Employees.EmployeeID
+
+
+6*. Для каждого заказа посчитать его итоговую стоимость (196 записей) 
+
+
+SELECT OrderId, sum(quantity*price)
+FROM Products as P
+Join OrderDetails as OD
+On P.ProductId = OD.ProductId
+group by orderId
+
+
+7*. Для каждого ShipperID выбрать самый дорогой заказ по сумме
+
+SELECT ShipperID, MAX(sqp)
+FROM
+(SELECT o.OrderID, o.ShipperID, SUM(Quantity*Price) sqp
+FROM Products p
+JOIN OrderDetails od
+ON p.ProductID=od.ProductID
+JOIN Orders o
+ON od.OrderID=o.OrderID
+GROUP BY o.OrderID)
+GROUP BY ShipperID
+
+
+8.Вывести поставщика (SupplierName), сумма чьих товаров самая дорогая (ответ: Aux joyeux ecclésiastiques, сумма 281.5)
+
+SELECT SupplierName, sum(price)
+FROM Suppliers as s
+Join Products as p
+On s.SupplierID = p.SupplierID
+Group by SupplierName
+Having price = (SELECT Max(price)From Products)
+ 
